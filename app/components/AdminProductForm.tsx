@@ -80,7 +80,7 @@ export default function AdminProductForm() {
         <label className="label font-medium text-gray-700">Product Name</label>
         <input
           type="text"
-          className={`input input-bordered bg-gray-50 ${errors.name ? "border-red-500" : ""}`}
+          className={`input input-bordered bg-blue-550 ${errors.name ? "border-red-500" : ""}`}
           {...register("name", { required: "Name is required" })}
         />
         {errors.name && (
@@ -91,7 +91,7 @@ export default function AdminProductForm() {
       <div className="form-control">
         <label className="label font-medium text-gray-700">Description</label>
         <textarea
-          className={`textarea textarea-bordered bg-gray-50 h-24 ${
+          className={`textarea textarea-bordered bg-blue-550 h-24 ${
             errors.description ? "border-red-500" : ""
           }`}
           {...register("description", { required: "Description is required" })}
@@ -109,12 +109,12 @@ export default function AdminProductForm() {
       <div className="divider text-gray-500">Image Variants</div>
 
       {fields.map((field, index) => (
-        <div key={field.id} className="bg-gray-50 rounded-lg p-4 shadow-sm">
+        <div key={field.id} className="bg-black-50 rounded-lg p-4 shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="form-control">
               <label className="label font-medium text-gray-700">Size & Aspect Ratio</label>
               <select
-                className="select select-bordered bg-white"
+                className="select select-bordered bg-blue-550"
                 {...register(`variants.${index}.type`)}
               >
                 {Object.entries(IMAGE_VARIANTS).map(([key, value]) => (
@@ -128,7 +128,7 @@ export default function AdminProductForm() {
             <div className="form-control">
               <label className="label font-medium text-gray-700">License</label>
               <select
-                className="select select-bordered bg-white"
+                className="select select-bordered bg-blue-550"
                 {...register(`variants.${index}.license`)}
               >
                 <option value="personal">Personal Use</option>
@@ -142,7 +142,7 @@ export default function AdminProductForm() {
                 type="number"
                 step="0.01"
                 min="0.01"
-                className="input input-bordered bg-gray-50"
+                className="input input-bordered bg-blue-550"
                 {...register(`variants.${index}.price`, {
                   valueAsNumber: true,
                   required: "Price is required",
