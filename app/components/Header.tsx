@@ -24,11 +24,24 @@ export default function Header() {
         <Link
           href="/"
           className="flex items-center gap-2 text-xl font-semibold text-gray-800 hover:text-blue-600 transition"
-          onClick={() => showNotification("Welcome to ImageKit Shop", "info")}
+          onClick={() => showNotification("Welcome to Premium Pixel Vault", "info")}
         >
           <Home className="w-5 h-5" />
-          <span>ImageKit Shop</span>
+          <span>Premium Pixel Vault</span>
         </Link>
+
+        {/* Add these links/buttons */}
+        <div className="flex items-center gap-6">
+          <Link href="/about" className="text-gray-700 hover:text-indigo-600 font-medium">
+            About Us
+          </Link>
+          <Link href="/orders" className="text-gray-700 hover:text-indigo-600 font-medium">
+            My Orders
+          </Link>
+          <Link href="/contact" className="text-gray-700 hover:text-indigo-600 font-medium">
+            Contact Us
+          </Link>
+        </div>
 
         <div className="flex items-center gap-4">
           <div className="dropdown dropdown-end">
@@ -39,7 +52,6 @@ export default function Header() {
             >
               <User className="w-5 h-5" />
             </div>
-
             <ul
               tabIndex={0}
               className="dropdown-content mt-3 p-2 shadow-lg rounded-lg w-64 bg-white border border-gray-100"
@@ -56,7 +68,7 @@ export default function Header() {
                     <li>
                       <Link
                         href="/admin"
-                        className="block px-4 py-2 text-sm hover:bg-gray-100 rounded"
+                        className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 rounded"
                         onClick={() =>
                           showNotification("Welcome to Admin Dashboard", "info")
                         }
@@ -68,7 +80,7 @@ export default function Header() {
                   <li>
                     <Link
                       href="/orders"
-                      className="block px-4 py-2 text-sm hover:bg-gray-100 rounded"
+                      className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 rounded"
                     >
                       My Orders
                     </Link>
@@ -86,7 +98,8 @@ export default function Header() {
                 <li>
                   <Link
                     href="/login"
-                    className="block px-4 py-2 text-lg text-blue-600 bg-blue-100 hover:bg-blue-400 rounded"                    onClick={() =>
+                    className="block px-4 py-2 text-lg text-blue-600 bg-blue-100 hover:bg-blue-400 rounded"
+                    onClick={() =>
                       showNotification("Please sign in to continue", "info")
                     }
                   >

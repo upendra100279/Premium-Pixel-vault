@@ -19,9 +19,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedVariant, setSelectedVariant] = useState<ImageVariant | null>(
-    null
-  );
+  const [selectedVariant, setSelectedVariant] = useState<ImageVariant | null>(null);
   const { showNotification } = useNotification();
   const router = useRouter();
   const { data: session } = useSession();
@@ -29,7 +27,6 @@ export default function ProductPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       const id = params?.id;
-
       if (!id) {
         setError("Product ID is missing");
         setLoading(false);
@@ -68,16 +65,19 @@ export default function ProductPage() {
         variant,
       });
 
-      // if (!process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
-      //   showNotification("Razorpay key is missing", "error");
-      //   return;
-      // }
+      // Ensure Razorpay script is loaded
+      if (!(window as any).Razorpay) {
+        showNotification("Razorpay SDK not loaded", "error");
+        return;
+      }
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount,
-        currency: "USD",
+        currency: "INR", // UPI only works with INR
         name: "ImageKit Shop",
+        description: `${product.name} - ${variant.type} Version`,
+        order_id: orderId,
         method: {
           netbanking: true,
           card: true,
@@ -86,14 +86,20 @@ export default function ProductPage() {
           emi: false,
           paylater: false,
         },
-        description: `${product.name} - ${variant.type} Version`,
-        order_id: orderId,
         handler: function () {
           showNotification("Payment successful!", "success");
           router.push("/orders");
         },
         prefill: {
           email: session.user.email,
+          contact: "9999999999",
+          method: "upi",
+          upi: {
+            vpa: "success@razorpay", // For test mode only
+          },
+        },
+        theme: {
+          color: "#3399cc",
         },
       };
 
@@ -145,9 +151,7 @@ export default function ProductPage() {
             className="relative rounded-lg overflow-hidden"
             style={{
               aspectRatio: selectedVariant
-                ? `${IMAGE_VARIANTS[selectedVariant.type].dimensions.width} / ${
-                    IMAGE_VARIANTS[selectedVariant.type].dimensions.height
-                  }`
+                ? `${IMAGE_VARIANTS[selectedVariant.type].dimensions.width} / ${IMAGE_VARIANTS[selectedVariant.type].dimensions.height}`
                 : "1 / 1",
             }}
           >
@@ -164,8 +168,6 @@ export default function ProductPage() {
               loading="eager"
             />
           </div>
-
-          {/* Image Dimensions Info */}
           {selectedVariant && (
             <div className="text-sm text-center text-base-content/70">
               Preview: {IMAGE_VARIANTS[selectedVariant.type].dimensions.width} x{" "}
@@ -178,21 +180,16 @@ export default function ProductPage() {
         <div className="space-y-6">
           <div>
             <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
-            <p className="text-base-content/80 text-lg">
-              {product.description}
-            </p>
+            <p className="text-base-content/80 text-lg">{product.description}</p>
           </div>
 
-          {/* Variants Selection */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Available Versions</h2>
             {product.variants.map((variant) => (
               <div
                 key={variant.type}
                 className={`card bg-base-200 cursor-pointer hover:bg-base-300 transition-colors ${
-                  selectedVariant?.type === variant.type
-                    ? "ring-2 ring-primary"
-                    : ""
+                  selectedVariant?.type === variant.type ? "ring-2 ring-primary" : ""
                 }`}
                 onClick={() => setSelectedVariant(variant)}
               >
@@ -226,7 +223,7 @@ export default function ProductPage() {
                     </div>
                     <div className="flex items-center gap-4">
                       <span className="text-xl font-bold">
-                        ${variant.price.toFixed(2)}
+                        ₹{variant.price.toFixed(2)}
                       </span>
                       <button
                         className="btn btn-primary btn-sm"
@@ -244,7 +241,7 @@ export default function ProductPage() {
             ))}
           </div>
 
-          {/* License Information */}
+          {/* License Info */}
           <div className="card bg-base-200">
             <div className="card-body p-4">
               <h3 className="font-semibold mb-2">License Information</h3>
