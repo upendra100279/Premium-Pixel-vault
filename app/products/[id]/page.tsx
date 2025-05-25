@@ -164,8 +164,16 @@ export default function ProductPage() {
                   ? getTransformation(selectedVariant.type)
                   : getTransformation("SQUARE")
               }
-              className="w-full h-full object-cover"
+              className="object-cover"
               loading="eager"
+              // Use fill and ensure parent is relative
+              // fill
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
             />
           </div>
           {selectedVariant && (

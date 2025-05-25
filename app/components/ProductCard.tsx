@@ -16,7 +16,7 @@ export default function ProductCard({ product }: { product: IProduct }) {
     <div className="bg-white rounded-xl shadow-md hover:shadow-lg hover:bg-blue-100 transition-all duration-300 overflow-hidden transform hover:scale-105">
       <Link href={`/products/${product._id}`} className="block relative">
         <div
-          className="w-full bg-gray-100 overflow-hidden"
+          className="w-full bg-gray-100 overflow-hidden relative" // <-- Added relative here
           style={{
             aspectRatio:
               IMAGE_VARIANTS.SQUARE.dimensions.width /
